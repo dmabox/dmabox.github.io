@@ -1,0 +1,53 @@
+﻿<script>
+// 跳转提示
+if (is_weixn_qq()) {;
+window.location.href = 'https://c.pc.qq.com/middle.html?pfurl='+window.location.href; 
+}
+function is_weixn_qq(){
+// 判断当前是否微信/QQ浏览器
+var ua = navigator.userAgent;
+var isWeixin = !!/MicroMessenger/i.test(ua);
+var isQQ = !!/QQ\//i.test(ua);
+if(isWeixin||isQQ){
+return true;
+}
+return false;
+}
+</script>
+
+<html>
+<head>
+<!关闭或维护 -->
+    <meta charset="utf-8">
+    <title>关闭或维护- NO SIGNAL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="./css/mdui.min.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+<div id="rin-bg"></div>
+<main id="rin-main">
+    <div class="rin-name">很&nbsp;&nbsp;抱&nbsp;&nbsp;歉</div>
+    <div class="rin-description">「网站处于关闭状态」</div>
+    <div class="rin-tr"></div>
+    <a class="mdui-btn mdui-btn-raised rin-btn mdui-text-capitalize">出现此页面可能是网站处于维护或关闭状态</a><br>
+	<a class="mdui-btn mdui-btn-raised rin-btn mdui-text-capitalize">可以再过一段时间后再访问！</a>
+</main>
+<footer id="rin-footer">
+    
+</p></p>
+	<br>&nbsp;
+</footer>
+<script src="./javascript/mdui.min.js"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c8375f1ac141d4b69a5edf133f2cbaab";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</body>
+</html>
