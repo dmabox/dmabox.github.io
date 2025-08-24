@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面跳转中...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 30px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .countdown {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 25px 0;
+            color: #FFD700;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FFD700, #FF9D00);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .info {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .animation-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+        }
+        
+        .loader {
+            width: 100%;
+            height: 100%;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top: 5px solid #FFD700;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="animation-container">
+            <div class="loader"></div>
+        </div>
+        <h1>⏳ 正在打开界面</h1>
+        <p>请稍后......</p>
+        <div class="countdown" id="countdown">5</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        <p>如果您的浏览器没有自动跳转，请点击下方按钮</p>
+        <button class="btn" onclick="redirectManual()">立即跳转</button>
+        <button class="btn" onclick="cancelRedirect()" style="background: rgba(255, 99, 99, 0.3);">取消跳转</button>
+        <p class="info">页面将在倒计时结束后自动跳转</p>
+    </div>
+
+    <script>
+        // 设置目标网址和倒计时时间（秒）
+        const targetUrl = "https://www.dmanb.com/dmaboxpay/";
+        let countdownTime = 5;
+        
+        // 更新倒计时显示和进度条
+        const countdownElement = document.getElementById('countdown');
+        const progressElement = document.getElementById('progress');
+        
+        // 设置Meta自动刷新（备用方法，确保即使JS禁用也能跳转）
+        const metaRefresh = document.createElement('meta');
+        metaRefresh.httpEquiv = 'Refresh';
+        metaRefresh.content = `${countdownTime}; URL='${targetUrl}'`;
+        document.head.appendChild(metaRefresh);
+        
+        // 更新倒计时
+        const countdownInterval = setInterval(() => {
+            countdownTime--;
+            countdownElement.textContent = countdownTime;
+            
+            // 更新进度条（百分比）
+            const progress = ((5 - countdownTime) / 5) * 100;
+            progressElement.style.width = `${progress}%`;
+            
+            // 倒计时结束，执行跳转
+            if (countdownTime <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = targetUrl;
+            }
+        }, 1000);
+        
+        // 手动跳转函数
+        function redirectManual() {
+            clearInterval(countdownInterval);
+            window.location.href = targetUrl;
+        }
+        
+        // 取消跳转函数
+        function cancelRedirect() {
+            clearInterval(countdownInterval);
+            
+            // 移除meta refresh标签
+            const metaTags = document.getElementsByTagName('meta');
+            for (let i = 0; i < metaTags.length; i++) {
+                if (metaTags[i].getAttribute('http-equiv') === 'Refresh') {
+                    document.head.removeChild(metaTags[i]);
+                    break;
+                }
+            }
+            
+            // 更新UI显示
+            countdownElement.textContent = "已取消";
+            countdownElement.style.color = "#ff4d4d";
+            progressElement.style.width = "0%";
+            
+            // 显示取消信息
+            document.querySelector('h1').textContent = "❌ 跳转已取消";
+            document.querySelector('p').textContent = "您已取消自动跳转";
+            
+            // 隐藏立即跳转按钮
+            document.querySelectorAll('.btn')[0].style.display = 'none';
+            
+            // 停止加载动画
+            document.querySelector('.loader').style.animation = 'none';
+            document.querySelector('.loader').style.border = '5px solid #ff4d4d';
+        }
+    </script>
+</body>
+</html>
