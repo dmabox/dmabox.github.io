@@ -44,6 +44,8 @@
             --text-dark: #888888;
             --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
             --transition: all 0.3s ease;
+            --container-padding: 20px;
+            --section-spacing: 40px;
         }
         
         body {
@@ -60,20 +62,21 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: var(--container-padding);
             background: var(--medium-bg);
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
         
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: var(--section-spacing);
             padding: 20px 0;
             position: relative;
         }
         
         .logo {
-            max-width: 600px;
+            max-width: 100%;
+            width: 600px;
             margin: 0 auto 20px;
             display: block;
             border-radius: 10px;
@@ -126,15 +129,16 @@
         .subtitle {
             text-align: center;
             font-size: 1.2rem;
-            margin-bottom: 40px;
+            margin-bottom: var(--section-spacing);
             color: var(--text-gray);
+            padding: 0 10px;
         }
         
         .product-showcase {
             background: var(--light-bg);
             border-radius: 15px;
             padding: 30px;
-            margin: 40px 0;
+            margin: var(--section-spacing) 0;
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -175,11 +179,13 @@
         .feature-highlight {
             color: var(--secondary-color);
             font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
         }
         
         .price-section {
             text-align: center;
-            margin: 40px 0;
+            margin: var(--section-spacing) 0;
             padding: 25px;
             background: linear-gradient(145deg, var(--medium-bg), var(--dark-bg));
             border-radius: 15px;
@@ -197,7 +203,7 @@
         
         .comparison-table {
             width: 100%;
-            margin: 40px 0;
+            margin: var(--section-spacing) 0;
             border-collapse: collapse;
             border-radius: 10px;
             overflow: hidden;
@@ -221,7 +227,7 @@
             background: var(--light-bg);
             border-radius: 15px;
             padding: 30px;
-            margin: 40px 0;
+            margin: var(--section-spacing) 0;
             box-shadow: var(--card-shadow);
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -236,7 +242,8 @@
         }
         
         .pc-images img {
-            max-width: 280px;
+            max-width: 100%;
+            width: 280px;
             border-radius: 10px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             transition: var(--transition);
@@ -272,7 +279,7 @@
             color: white;
             padding: 20px;
             border-radius: 10px;
-            margin: 40px 0;
+            margin: var(--section-spacing) 0;
             text-align: center;
             box-shadow: 0 8px 16px rgba(183, 28, 28, 0.4);
             border-left: 4px solid #ff5252;
@@ -321,6 +328,9 @@
             padding: 15px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
         .site-branding {
@@ -329,7 +339,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 var(--container-padding);
         }
         
         .site-title {
@@ -362,17 +372,52 @@
             background: rgba(255, 255, 255, 0.05);
         }
         
-        @media (max-width: 768px) {
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
             h1 {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
             
             h2 {
                 font-size: 1.8rem;
             }
             
+            .feature {
+                min-width: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            :root {
+                --container-padding: 15px;
+                --section-spacing: 30px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+            
             .features {
                 flex-direction: column;
+            }
+            
+            .feature {
+                min-width: 100%;
             }
             
             .pc-images {
@@ -386,13 +431,89 @@
             }
             
             .site-branding {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 15px;
             }
             
+            /* 移动端导航菜单 */
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-navigation {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--medium-bg);
+                padding: 20px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                transform: translateY(-100%);
+                opacity: 0;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                z-index: 999;
+            }
+            
+            .main-navigation.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            
             .main-navigation ul {
-                flex-wrap: wrap;
-                justify-content: center;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .main-navigation a {
+                display: block;
+                padding: 10px 15px;
+                border-radius: 5px;
+                background: rgba(255, 255, 255, 0.05);
+            }
+            
+            .price {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .product-showcase,
+            .secondary-pc,
+            .price-section {
+                padding: 20px;
+            }
+            
+            .price {
+                font-size: 1.8rem;
+            }
+            
+            .feature-highlight {
+                font-size: 1.1rem;
+            }
+            
+            .spec-item {
+                flex-direction: column;
+            }
+            
+            .spec-value {
+                margin-top: 5px;
+            }
+            
+            .qq-contact {
+                padding: 10px 20px;
+                font-size: 0.9rem;
             }
         }
         
@@ -409,6 +530,29 @@
         .delay-1 { animation-delay: 0.2s; }
         .delay-2 { animation-delay: 0.4s; }
         .delay-3 { animation-delay: 0.6s; }
+        
+        /* 触摸设备优化 */
+        @media (hover: none) {
+            .feature:hover,
+            .pc-images img:hover,
+            .qq-contact:hover {
+                transform: none;
+            }
+            
+            .feature {
+                border-left: 4px solid var(--secondary-color);
+            }
+        }
+        
+        /* 高分辨率屏幕优化 */
+        @media (min-resolution: 2dppx) {
+            .logo,
+            .product-image,
+            .comparison-table img,
+            .pc-images img {
+                image-rendering: -webkit-optimize-contrast;
+            }
+        }
     </style>
 </head>
 <body>
@@ -418,6 +562,7 @@
             <div class="site-title">
                 <a href="#">NICAER-提供DMA解决方案</a>
             </div>
+            <button class="menu-toggle" aria-label="切换菜单">☰</button>
             <nav class="main-navigation">
                 <ul>
                     <li><a href="/index.html" target="_blank" rel="noopener noreferrer">首页</a></li>
@@ -551,121 +696,156 @@
                 element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
                 observer.observe(element);
             });
+            
+            // 移动端菜单切换
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mainNavigation = document.querySelector('.main-navigation');
+            
+            if (menuToggle && mainNavigation) {
+                menuToggle.addEventListener('click', function() {
+                    mainNavigation.classList.toggle('active');
+                });
+                
+                // 点击菜单外区域关闭菜单
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.main-navigation') && 
+                        !event.target.closest('.menu-toggle') && 
+                        mainNavigation.classList.contains('active')) {
+                        mainNavigation.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 防止菜单滚动时跳动
+            let lastScrollTop = 0;
+            const masthead = document.getElementById('masthead');
+            
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    masthead.style.transform = 'translateY(-100%)';
+                } else {
+                    masthead.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
         });
 
-// 确保DOM加载完成后再执行
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initProtection);
-} else {
-    initProtection();
-}
-
-function initProtection() {
-    // 统一的提示信息显示函数
-    function showNotice(x, y, message) {
-        // 移除已有提示
-        const existing = document.getElementById('protection-notice');
-        if (existing) {
-            clearTimeout(existing.timer);
-            document.body.removeChild(existing);
+        // 确保DOM加载完成后再执行
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initProtection);
+        } else {
+            initProtection();
         }
-        
-        // 创建提示元素
-        const notice = document.createElement('div');
-        notice.id = 'protection-notice';
-        // 添加两个感叹号
-        notice.textContent = `${message}!!`;
-        notice.style.cssText = `
-            position: fixed;
-            padding: 12px 20px;
-            background: #ff3e3e;
-            color: white;
-            border-radius: 8px;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            font-size: 15px;
-            font-weight: 500;
-            z-index: 99999;
-            pointer-events: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-left: 4px solid #d32f2f;
-        `;
-        
-        // 计算位置，防止溢出
-        const winWidth = window.innerWidth;
-        const winHeight = window.innerHeight;
-        notice.style.left = `${Math.min(x + 10, winWidth - 250)}px`;
-        notice.style.top = `${Math.min(y + 10, winHeight - 80)}px`;
-        
-        // 安全添加元素
-        if (document.body) {
-            document.body.appendChild(notice);
-            
-            // 显示动画
-            setTimeout(() => {
-                notice.style.opacity = '1';
-                notice.style.transform = 'translateY(0)';
-            }, 10);
-            
-            // 自动移除
-            notice.timer = setTimeout(() => {
-                notice.style.opacity = '0';
-                notice.style.transform = 'translateY(10px)';
-                setTimeout(() => {
-                    if (document.body.contains(notice)) {
-                        document.body.removeChild(notice);
-                    }
-                }, 300);
-            }, 2500);
+
+        function initProtection() {
+            // 统一的提示信息显示函数
+            function showNotice(x, y, message) {
+                // 移除已有提示
+                const existing = document.getElementById('protection-notice');
+                if (existing) {
+                    clearTimeout(existing.timer);
+                    document.body.removeChild(existing);
+                }
+                
+                // 创建提示元素
+                const notice = document.createElement('div');
+                notice.id = 'protection-notice';
+                // 添加两个感叹号
+                notice.textContent = `${message}!!`;
+                notice.style.cssText = `
+                    position: fixed;
+                    padding: 12px 20px;
+                    background: #ff3e3e;
+                    color: white;
+                    border-radius: 8px;
+                    font-family: 'Segoe UI', Roboto, sans-serif;
+                    font-size: 15px;
+                    font-weight: 500;
+                    z-index: 99999;
+                    pointer-events: none;
+                    opacity: 0;
+                    transform: translateY(10px);
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    border-left: 4px solid #d32f2f;
+                `;
+                
+                // 计算位置，防止溢出
+                const winWidth = window.innerWidth;
+                const winHeight = window.innerHeight;
+                notice.style.left = `${Math.min(x + 10, winWidth - 250)}px`;
+                notice.style.top = `${Math.min(y + 10, winHeight - 80)}px`;
+                
+                // 安全添加元素
+                if (document.body) {
+                    document.body.appendChild(notice);
+                    
+                    // 显示动画
+                    setTimeout(() => {
+                        notice.style.opacity = '1';
+                        notice.style.transform = 'translateY(0)';
+                    }, 10);
+                    
+                    // 自动移除
+                    notice.timer = setTimeout(() => {
+                        notice.style.opacity = '0';
+                        notice.style.transform = 'translateY(10px)';
+                        setTimeout(() => {
+                            if (document.body.contains(notice)) {
+                                document.body.removeChild(notice);
+                            }
+                        }, 300);
+                    }, 2500);
+                }
+            }
+
+            // 禁止右键菜单
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showNotice(e.clientX, e.clientY, 'Right-click menu is disabled');
+            });
+
+            // 禁止选中文本
+            document.addEventListener('selectstart', (e) => {
+                e.preventDefault();
+                showNotice(e.clientX, e.clientY, 'Content selection is prohibited');
+                return false;
+            });
+
+            // 禁止复制
+            document.addEventListener('copy', (e) => {
+                e.preventDefault();
+                showNotice(e.clientX, e.clientY, 'Copying content is prohibited');
+            });
+
+            // 禁止剪切
+            document.addEventListener('cut', (e) => {
+                e.preventDefault();
+                showNotice(e.clientX, e.clientY, 'Cutting content is prohibited');
+            });
+
+            // 禁止查看源代码
+            document.addEventListener('keydown', (e) => {
+                // F12键
+                if (e.key === 'F12') {
+                    e.preventDefault();
+                    showNotice(window.innerWidth/2, window.innerHeight/2, 'Viewing source code is prohibited');
+                }
+                // Ctrl+U (查看源代码)
+                else if (e.ctrlKey && e.key.toLowerCase() === 'u') {
+                    e.preventDefault();
+                    showNotice(window.innerWidth/2, window.innerHeight/2, 'Viewing source code is prohibited');
+                }
+                // Ctrl+Shift+I (开发者工具)
+                else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
+                    e.preventDefault();
+                    showNotice(window.innerWidth/2, window.innerHeight/2, 'Opening developer tools is prohibited');
+                }
+            });
         }
-    }
-
-    // 禁止右键菜单
-    document.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        showNotice(e.clientX, e.clientY, 'Right-click menu is disabled');
-    });
-
-    // 禁止选中文本
-    document.addEventListener('selectstart', (e) => {
-        e.preventDefault();
-        showNotice(e.clientX, e.clientY, 'Content selection is prohibited');
-        return false;
-    });
-
-    // 禁止复制
-    document.addEventListener('copy', (e) => {
-        e.preventDefault();
-        showNotice(e.clientX, e.clientY, 'Copying content is prohibited');
-    });
-
-    // 禁止剪切
-    document.addEventListener('cut', (e) => {
-        e.preventDefault();
-        showNotice(e.clientX, e.clientY, 'Cutting content is prohibited');
-    });
-
-    // 禁止查看源代码
-    document.addEventListener('keydown', (e) => {
-        // F12键
-        if (e.key === 'F12') {
-            e.preventDefault();
-            showNotice(window.innerWidth/2, window.innerHeight/2, 'Viewing source code is prohibited');
-        }
-        // Ctrl+U (查看源代码)
-        else if (e.ctrlKey && e.key.toLowerCase() === 'u') {
-            e.preventDefault();
-            showNotice(window.innerWidth/2, window.innerHeight/2, 'Viewing source code is prohibited');
-        }
-        // Ctrl+Shift+I (开发者工具)
-        else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
-            e.preventDefault();
-            showNotice(window.innerWidth/2, window.innerHeight/2, 'Opening developer tools is prohibited');
-        }
-    });
-}
     </script>
 </body>
 </html>
